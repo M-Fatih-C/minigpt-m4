@@ -1,0 +1,4 @@
+torch>=2.13.0
+datasets>=5.0.1
+numpy
+tqdm
