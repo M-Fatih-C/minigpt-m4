@@ -171,19 +171,19 @@ class MultiHeadAttention(nn.Module):
     def __init__(self):
         super().__init__()
 
-        # 6 farklı attention head.
+        # N_HEAD adet attention head.
         #
         # Her biri:
         #
         # 384 -> 64
         #
-        # 6 × 64 = 384
+        # N_HEAD × HEAD_SIZE = N_EMBD
         self.heads = nn.ModuleList(
             [
                 CausalSelfAttentionHead(
                     head_size=HEAD_SIZE
                 )
-                for _ in range(6)
+                for _ in range(N_HEAD)
             ]
         )
 

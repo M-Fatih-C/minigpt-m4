@@ -1,10 +1,26 @@
-# MiniGPT-M4 configuration
+import os
+
+
+def env_int(name, default):
+    return int(
+        os.getenv(name, default)
+    )
+
+
+def env_float(name, default):
+    return float(
+        os.getenv(name, default)
+    )
+
 
 # --------------------------------------------------
 # Dataset / tokenizer
 # --------------------------------------------------
 
-VOCAB_SIZE = 2048
+VOCAB_SIZE = env_int(
+    "MINIGPT_VOCAB_SIZE",
+    2048,
+)
 
 TRAIN_DATA_PATH = "data/train.bin"
 VALID_DATA_PATH = "data/validation.bin"
@@ -14,25 +30,50 @@ VALID_DATA_PATH = "data/validation.bin"
 # Sequence
 # --------------------------------------------------
 
-BLOCK_SIZE = 256
-BATCH_SIZE = 32
+BLOCK_SIZE = env_int(
+    "MINIGPT_BLOCK_SIZE",
+    256,
+)
+
+BATCH_SIZE = env_int(
+    "MINIGPT_BATCH_SIZE",
+    32,
+)
 
 
 # --------------------------------------------------
 # Transformer
 # --------------------------------------------------
 
-N_EMBD = 384
+N_EMBD = env_int(
+    "MINIGPT_N_EMBD",
+    384,
+)
 
-N_HEAD = 6
+N_HEAD = env_int(
+    "MINIGPT_N_HEAD",
+    6,
+)
 
-N_LAYER = 8
+N_LAYER = env_int(
+    "MINIGPT_N_LAYER",
+    8,
+)
 
-assert N_EMBD % N_HEAD == 0
+if N_EMBD % N_HEAD != 0:
+    raise ValueError(
+        "N_EMBD must be divisible by N_HEAD"
+    )
 
-HEAD_SIZE = N_EMBD // N_HEAD
+HEAD_SIZE = (
+    N_EMBD // N_HEAD
+)
 
-DROPOUT = 0.1
+DROPOUT = env_float(
+    "MINIGPT_DROPOUT",
+    0.1,
+)
+
 
 # --------------------------------------------------
 # Training
